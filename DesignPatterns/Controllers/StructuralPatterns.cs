@@ -1,8 +1,10 @@
 ﻿using DesignPatternServices_.StructuralPatterns.Adapter;
 using DesignPatternServices_.StructuralPatterns.Adapter.Adaptee;
 using DesignPatternServices_.StructuralPatterns.Adapter.Adapter;
+using DesignPatternServices_.StructuralPatterns.Decorator;
 using DesignPatternServices_.StructuralPatterns.Facade;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace DesignPatterns.Controllers
 {
@@ -26,6 +28,28 @@ namespace DesignPatterns.Controllers
         {
             Order order = new Order();
             return Ok(order.PlaceOrder());
+        }
+
+        [HttpGet]
+        public ActionResult Decorator()
+        {
+            var stringBuilder = new StringBuilder();
+            PlainPizza plainPizzaObj = new PlainPizza();
+            string plainPizza = plainPizzaObj.MakePizza();
+
+            stringBuilder.AppendLine($"{plainPizza}");
+
+            ChickenPizzaDecorator chickenPizzaDecorator = new ChickenPizzaDecorator(plainPizzaObj);
+            string chickenPizza = chickenPizzaDecorator.MakePizza();
+
+            stringBuilder.AppendLine($"{chickenPizza}");
+
+            VegPizzaDecorator vegPizzaDecorator = new VegPizzaDecorator(plainPizzaObj);
+            string vegetables = vegPizzaDecorator.MakePizza();
+
+            stringBuilder.AppendLine($"{vegetables}");
+
+            return Ok(stringBuilder.ToString());
         }
     }
 }
