@@ -1,6 +1,8 @@
 ﻿using DesignPatternsServices.BehavioralPatterns.ChainOfResponsibility;
 using DesignPatternsServices.BehavioralPatterns.State;
 using DesignPatternsServices.BehavioralPatterns.State.Context;
+using DesignPatternsServices.BehavioralPatterns.Strategy.Context;
+using DesignPatternsServices.BehavioralPatterns.Strategy;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
 
@@ -50,6 +52,20 @@ namespace DesignPatterns.Controllers
             res.AppendLine(order.PrintStatus());  // Output: Order is PROCESSED.
             res.AppendLine(order.SetState(new Canceled()));
             res.AppendLine(order.PrintStatus());  // Output: Order is CANCELED.
+            return Ok(res.ToString());
+        }
+
+        [HttpGet]
+        public ActionResult Strategy()
+        {
+            var res = new StringBuilder();
+            ICompression strategy = new ZipCompression();
+            //Pass ZipCompression Strategy as an argument to the CompressionContext constructor
+            CompressionContext ctx = new CompressionContext(strategy);
+            res.AppendLine(ctx.CreateArchive("StrategyPattern"));
+            //Changing the Strategy using SetStrategy Method
+            ctx.SetStrategy(new RarCompression());
+            res.AppendLine(ctx.CreateArchive("StrategyPattern"));
             return Ok(res.ToString());
         }
 
