@@ -7,6 +7,7 @@ using DesignPatternServices_.StructuralPatterns.Bridge.ConcreteImplementor;
 using DesignPatternServices_.StructuralPatterns.Composite;
 using DesignPatternServices_.StructuralPatterns.Decorator;
 using DesignPatternServices_.StructuralPatterns.Facade;
+using DesignPatternServices_.StructuralPatterns.Flyweight;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.Text;
@@ -96,6 +97,19 @@ namespace DesignPatterns.Controllers
             computer.AddComponent(peripherals);
 
             return Ok(computer.DisplayPrice());
+        }
+
+        [HttpGet]
+        public ActionResult Flyweight()
+        {
+            var shop = new CoffeeShop();
+
+            shop.TakeOrder("Cappuccino", 1);
+            shop.TakeOrder("Espresso", 2, "With extra sugar");
+            shop.TakeOrder("Cappuccino", 3);
+            shop.TakeOrder("Latte", 4);
+
+            return Ok(shop.ServeOrders());
         }
     }
 }
