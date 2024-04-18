@@ -1,9 +1,13 @@
 ﻿using DesignPatternServices_.StructuralPatterns.Adapter;
 using DesignPatternServices_.StructuralPatterns.Adapter.Adaptee;
 using DesignPatternServices_.StructuralPatterns.Adapter.Adapter;
+using DesignPatternServices_.StructuralPatterns.Bridge.Abstraction;
+using DesignPatternServices_.StructuralPatterns.Bridge.ConcreteAbstraction;
+using DesignPatternServices_.StructuralPatterns.Bridge.ConcreteImplementor;
 using DesignPatternServices_.StructuralPatterns.Decorator;
 using DesignPatternServices_.StructuralPatterns.Facade;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR.Protocol;
 using System.Text;
 
 namespace DesignPatterns.Controllers
@@ -50,6 +54,13 @@ namespace DesignPatterns.Controllers
             stringBuilder.AppendLine($"{vegetables}");
 
             return Ok(stringBuilder.ToString());
+        }
+
+        [HttpGet]
+        public ActionResult Bridge()
+        {
+            AbstractMessage longMessage = new LongMessage(new EmailMessageSender());
+            return Ok(longMessage.SendMessage("Hallo, this is brige pattern"));
         }
     }
 }
