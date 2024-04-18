@@ -1,5 +1,7 @@
 ﻿using DesignPatternServices_.CreationalPatterns.AbstractFactory.Client;
 using DesignPatternServices_.CreationalPatterns.AbstractFactory.Concrete_Factory;
+using DesignPatternServices_.CreationalPatterns.BuilderPattern.Concrete_Builder;
+using DesignPatternServices_.CreationalPatterns.BuilderPattern.Director;
 using DesignPatternServices_.CreationalPatterns.FactoryMethod.Client;
 using DesignPatternServices_.CreationalPatterns.FactoryMethod.Concrete_Creator;
 using Microsoft.AspNetCore.Mvc;
@@ -35,6 +37,19 @@ namespace DesignPatterns.Controllers
             var postgreSQLFactory = new PostgreSQLFactory();
             var postgreSQLManager = new DatabaseManager(postgreSQLFactory.CreateCommand(), postgreSQLFactory.CreateConnection());
             var res = postgreSQLManager.PerformDatabaseOperations("Select * From Users");
+            return Ok(res);
+        }
+
+        [HttpGet]
+        public ActionResult Builder()
+        {
+            var deployer = new ServerDeployment();
+            var webServerBuilder = new WebServerBuilder();
+
+            deployer.Deploy(webServerBuilder);
+
+            var serverConfig = webServerBuilder.GetConfiguration();
+            var res = serverConfig.DisplayConfig();
             return Ok(res);
         }
 
