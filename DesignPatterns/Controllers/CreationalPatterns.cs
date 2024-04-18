@@ -4,6 +4,7 @@ using DesignPatternServices_.CreationalPatterns.BuilderPattern.Concrete_Builder;
 using DesignPatternServices_.CreationalPatterns.BuilderPattern.Director;
 using DesignPatternServices_.CreationalPatterns.FactoryMethod.Client;
 using DesignPatternServices_.CreationalPatterns.FactoryMethod.Concrete_Creator;
+using DesignPatternServices_.CreationalPatterns.Prototype.Concrete_Prototype;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DesignPatterns.Controllers
@@ -53,5 +54,28 @@ namespace DesignPatterns.Controllers
             return Ok(res);
         }
 
+        [HttpGet]
+        public ActionResult Prototype()
+        {
+            EmployeeProfile existingEmployee = new EmployeeProfile
+            {
+                Name = "Maulana Muhammad",
+                Address = "Lawanggintung",
+                Role = "Software Developer",
+                Salary = 100_000_000,
+            };
+
+            var old = existingEmployee.DisplayProfile();
+            // HR wants to create a profile for a new temporary staff member with a similar role and salary
+            EmployeeProfile tempEmployee = (EmployeeProfile)existingEmployee.Clone();
+
+            tempEmployee.Name = "Clone Maulana Muhammad";
+            tempEmployee.Address = "Batutulis";
+            var newProfile = tempEmployee.DisplayProfile();
+
+
+            return Ok($@"{old}
+{newProfile}");
+        }
     }
 }
