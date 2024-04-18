@@ -5,6 +5,9 @@ using DesignPatternsServices.BehavioralPatterns.Strategy.Context;
 using DesignPatternsServices.BehavioralPatterns.Strategy;
 using Microsoft.AspNetCore.Mvc;
 using System.Text;
+using DesignPatternsServices.BehavioralPatterns.Command.Invoker;
+using DesignPatternsServices.BehavioralPatterns.Command;
+using DesignPatternsServices.BehavioralPatterns.Command.Receiver;
 
 namespace DesignPatterns.Controllers
 {
@@ -67,6 +70,21 @@ namespace DesignPatterns.Controllers
             ctx.SetStrategy(new RarCompression());
             res.AppendLine(ctx.CreateArchive("StrategyPattern"));
             return Ok(res.ToString());
+        }
+
+        [HttpGet]
+        public ActionResult Command()
+        {
+            Chef chef = new Chef();
+            IOrderCommand pastaOrder = new PastaOrderCommand(chef);
+            IOrderCommand burgerOrder = new BurgerOrderCommand(chef);
+
+            Waiter waiter = new Waiter();
+
+            waiter.TakeOrder(pastaOrder);
+            waiter.TakeOrder(burgerOrder);
+            // Later, the waiter sends all orders to the kitchen
+            return Ok(waiter.PlaceOrders());
         }
 
     }
