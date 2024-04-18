@@ -1,4 +1,6 @@
-﻿using DesignPatternServices_.CreationalPatterns.FactoryMethod.Client;
+﻿using DesignPatternServices_.CreationalPatterns.AbstractFactory.Client;
+using DesignPatternServices_.CreationalPatterns.AbstractFactory.Concrete_Factory;
+using DesignPatternServices_.CreationalPatterns.FactoryMethod.Client;
 using DesignPatternServices_.CreationalPatterns.FactoryMethod.Concrete_Creator;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +28,15 @@ namespace DesignPatterns.Controllers
 
             return Ok(pdf);
         }
-        
+
+        [HttpGet]
+        public ActionResult AbstractFactory()
+        {
+            var postgreSQLFactory = new PostgreSQLFactory();
+            var postgreSQLManager = new DatabaseManager(postgreSQLFactory.CreateCommand(), postgreSQLFactory.CreateConnection());
+            var res = postgreSQLManager.PerformDatabaseOperations("Select * From Users");
+            return Ok(res);
+        }
+
     }
 }
