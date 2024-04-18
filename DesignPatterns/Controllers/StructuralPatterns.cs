@@ -8,8 +8,8 @@ using DesignPatternServices_.StructuralPatterns.Composite;
 using DesignPatternServices_.StructuralPatterns.Decorator;
 using DesignPatternServices_.StructuralPatterns.Facade;
 using DesignPatternServices_.StructuralPatterns.Flyweight;
+using DesignPatternServices_.StructuralPatterns.Proxy;
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
 using System.Text;
 using IComponent = DesignPatternServices_.StructuralPatterns.Composite.IComponent;
 
@@ -110,6 +110,19 @@ namespace DesignPatterns.Controllers
             shop.TakeOrder("Latte", 4);
 
             return Ok(shop.ServeOrders());
+        }
+
+        [HttpGet]
+        public ActionResult Proxy()
+        {
+            // Menggunakan Proxy untuk mengakses objek RealSubject
+            Proxy proxy = new Proxy();
+
+            // Pertama kali permintaan diproses, objek RealSubject dibuat
+            proxy.Request();
+
+            // Permintaan berikutnya menggunakan objek RealSubject yang sudah ada
+            return Ok(proxy.Request());
         }
     }
 }
