@@ -12,6 +12,7 @@ using DesignPatternsServices.BehavioralPatterns.Visitor;
 using DesignPatternsServices.BehavioralPatterns.Template;
 using System;
 using DesignPatternsServices.BehavioralPatterns.Memento;
+using DesignPatternsServices.BehavioralPatterns.Mediator;
 
 namespace DesignPatterns.Controllers
 {
@@ -153,6 +154,20 @@ namespace DesignPatterns.Controllers
             res.AppendLine(account.RestoreFromMemento(history.UndoTransaction()));
 
             return Ok(res.ToString());
+        }
+        [HttpGet]
+        public ActionResult Mediator()
+        {
+            var res = new StringBuilder();
+            var chatroom = new ChatRoom();
+            var john = new Participant("John");
+            var jane = new Participant("Jane");
+            chatroom.Register(john);
+            chatroom.Register(jane);
+            res.AppendLine(john.Send("Jane", "Hey there!"));
+            res.AppendLine(jane.Send("John", "Hi John!"));
+            return Ok(res.ToString());
+
         }
 
     }
