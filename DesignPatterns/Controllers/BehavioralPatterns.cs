@@ -11,6 +11,7 @@ using DesignPatternsServices.BehavioralPatterns.Command.Receiver;
 using DesignPatternsServices.BehavioralPatterns.Visitor;
 using DesignPatternsServices.BehavioralPatterns.Template;
 using System;
+using DesignPatternsServices.BehavioralPatterns.Memento;
 
 namespace DesignPatterns.Controllers
 {
@@ -133,6 +134,24 @@ namespace DesignPatterns.Controllers
             houseTemplate = new WoodenHouse();
             //Call the Template Method to Build the Wooden House
             res.AppendLine(houseTemplate.BuildHouse());
+            return Ok(res.ToString());
+        }
+        [HttpGet]
+        public ActionResult Memento()
+        {
+            var res = new StringBuilder();
+            BankAccount account = new BankAccount(1000.00M);
+            TransactionHistory history = new TransactionHistory();
+
+            res.AppendLine(account.Deposit(200));
+            history.SaveState(account);  // Balance: 1200
+            res.AppendLine(account.Withdraw(100));
+            history.SaveState(account);  // Balance: 1100
+            res.AppendLine(account.Withdraw(50));
+            history.SaveState(account);  // Balance: 1050
+            // Oops! That last withdrawal was a mistake. Let's undo it.
+            res.AppendLine(account.RestoreFromMemento(history.UndoTransaction()));
+
             return Ok(res.ToString());
         }
 
