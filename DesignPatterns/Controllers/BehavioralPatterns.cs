@@ -9,6 +9,8 @@ using DesignPatternsServices.BehavioralPatterns.Command.Invoker;
 using DesignPatternsServices.BehavioralPatterns.Command;
 using DesignPatternsServices.BehavioralPatterns.Command.Receiver;
 using DesignPatternsServices.BehavioralPatterns.Visitor;
+using DesignPatternsServices.BehavioralPatterns.Template;
+using System;
 
 namespace DesignPatterns.Controllers
 {
@@ -112,6 +114,25 @@ namespace DesignPatterns.Controllers
             res.AppendLine($"Discounted Price of Apple: ${discountVisitor.DiscountedPrice}");
             res.AppendLine(apple.Accept(descriptionVisitor));
 
+            return Ok(res.ToString());
+        }
+
+
+        [HttpGet]
+        public ActionResult Template()
+        {
+            var res = new StringBuilder();
+
+            res.AppendLine("Build a Concrete House");
+            HouseTemplate houseTemplate = new ConcreteHouse();
+            //Call the Template Method to Build the Concrete House
+            res.AppendLine(houseTemplate.BuildHouse());
+
+
+            res.AppendLine("Build a Wooden House");
+            houseTemplate = new WoodenHouse();
+            //Call the Template Method to Build the Wooden House
+            res.AppendLine(houseTemplate.BuildHouse());
             return Ok(res.ToString());
         }
 
