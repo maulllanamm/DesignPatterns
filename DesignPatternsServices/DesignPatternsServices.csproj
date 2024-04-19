@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="BehavioralPatterns\Iterator\Concrete Aggregate\" />
+    <Folder Include="BehavioralPatterns\Iterator\Interface Aggregate\" />
+    <Folder Include="BehavioralPatterns\Iterator\Collection Item\" />
+  </ItemGroup>
+
 </Project>
