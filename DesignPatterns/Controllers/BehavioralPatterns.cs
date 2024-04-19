@@ -8,6 +8,7 @@ using System.Text;
 using DesignPatternsServices.BehavioralPatterns.Command.Invoker;
 using DesignPatternsServices.BehavioralPatterns.Command;
 using DesignPatternsServices.BehavioralPatterns.Command.Receiver;
+using DesignPatternsServices.BehavioralPatterns.Visitor;
 
 namespace DesignPatterns.Controllers
 {
@@ -85,6 +86,33 @@ namespace DesignPatterns.Controllers
             waiter.TakeOrder(burgerOrder);
             // Later, the waiter sends all orders to the kitchen
             return Ok(waiter.PlaceOrders());
+        }
+
+        [HttpGet]
+        public ActionResult Visitor()
+        {
+            var res = new StringBuilder();
+
+            IProduct book = new Book { Price = 100, ISBN = "123456", Title = "Design Patterns" };
+            IProduct laptop = new Electronic { Price = 1000, Brand = "Dell", Model = "XPS 15" };
+            IProduct apple = new Grocery { Price = 2, Name = "Apple", ExpiryDate = DateTime.Now.AddDays(10) };
+
+            var discountVisitor = new DiscountVisitor();
+            var descriptionVisitor = new DescriptionVisitor();
+
+            book.Accept(discountVisitor);
+            res.AppendLine($"Discounted Price of Book: ${discountVisitor.DiscountedPrice}");
+            res.AppendLine(book.Accept(descriptionVisitor));
+
+            laptop.Accept(discountVisitor);
+            res.AppendLine($"Discounted Price of Laptop: ${discountVisitor.DiscountedPrice}");
+            res.AppendLine(laptop.Accept(descriptionVisitor));
+
+            apple.Accept(discountVisitor);
+            res.AppendLine($"Discounted Price of Apple: ${discountVisitor.DiscountedPrice}");
+            res.AppendLine(apple.Accept(descriptionVisitor));
+
+            return Ok(res.ToString());
         }
 
     }
